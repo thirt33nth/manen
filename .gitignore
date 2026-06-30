@@ -1,0 +1,20 @@
+# macOS
+.DS_Store
+
+# Xcode
+DerivedData/
+build/
+*.xcuserstate
+xcuserdata/
+
+# Swift Package Manager
+.build/
+
+# Local snapshots and generated archives
+Snapshots/*.zip
+
+# Large source audio renders kept outside the app bundle
+/Fordybelse_focus_ambient_30min_loop.wav
+/Fordybelse_focus_downtempo_5min.wav
+/Fordybelse_relaxation_warm_5min.wav
+/Fordybelse_sleep_drift_5min.wav
