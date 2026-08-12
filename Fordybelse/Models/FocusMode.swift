@@ -8,13 +8,32 @@ enum FocusMode: String, CaseIterable, Identifiable {
     var id: String { rawValue }
 
     var title: String {
+        NSLocalizedString(titleLocalizationKey, comment: "")
+    }
+
+    var activeStatusText: String {
+        NSLocalizedString(activeStatusLocalizationKey, comment: "")
+    }
+
+    var titleLocalizationKey: String {
         switch self {
         case .focus:
-            return "Focus"
+            return "mode.focus.title"
         case .relax:
-            return "Relax"
+            return "mode.relax.title"
         case .sleep:
-            return "Sleep"
+            return "mode.sleep.title"
+        }
+    }
+
+    private var activeStatusLocalizationKey: String {
+        switch self {
+        case .focus:
+            return "status.focus_active"
+        case .relax:
+            return "status.relax_active"
+        case .sleep:
+            return "status.sleep_active"
         }
     }
 
@@ -30,7 +49,7 @@ enum FocusMode: String, CaseIterable, Identifiable {
     }
 
     var audioFileExtension: String {
-        "wav"
+        "m4a"
     }
 
     var isAvailableInMVP: Bool {

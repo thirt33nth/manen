@@ -4,7 +4,7 @@
 #include <stdlib.h>
 
 #define SR 44100
-#define DURATION 300
+#define DURATION 1800
 #define TOTAL ((int64_t)SR * DURATION)
 #define PI 3.14159265358979323846
 
@@ -50,7 +50,7 @@ static double one_pole(double input, double *state, double amount) {
 }
 
 int main(void) {
-    const char *out = "Fordybelse_sleep_drift_5min.wav";
+    const char *out = "Fordybelse_sleep_drift_30min.wav";
     int16_t *audio = (int16_t *)malloc((size_t)TOTAL * 2 * sizeof(int16_t));
     if (!audio) {
         fprintf(stderr, "Could not allocate render buffer.\n");
@@ -83,7 +83,8 @@ int main(void) {
         double wa = 0.5 + 0.5 * cos(PI * cf);
         double wb = 0.5 - 0.5 * cos(PI * cf);
 
-        double master = smoothstep(t / 18.0) * (1.0 - smoothstep((t - (DURATION - 18.0)) / 18.0));
+        double master = smoothstep(t / 24.0) * (1.0 - smoothstep((t - (DURATION - 24.0)) / 24.0));
+        double session_dim = 1.0 - 0.10 * smoothstep(t / DURATION);
         double breath = 0.74 + 0.040 * sin(2 * PI * t / 96.0) + 0.020 * sin(2 * PI * t / 150.0);
         double drowsy_taper = 1.0 - 0.12 * smoothstep(t / DURATION);
         double phrase_breath = 0.60 + 0.40 * pow(sin(PI * fmod(t / 32.0, 1.0)), 0.86);
@@ -104,7 +105,7 @@ int main(void) {
                     double ph = pad_phase[c][note][layer];
                     double tone = sin(ph) + 0.055 * sin(2.0 * ph + 0.15);
                     double pan = 0.24 * sin(2 * PI * t / (170.0 + note * 20.0) + c * 0.1);
-                    pan_stereo(tone * amp * weight * breath * drowsy_taper * phrase_breath, pan, &l, &r);
+                    pan_stereo(tone * amp * weight * breath * drowsy_taper * phrase_breath * session_dim, pan, &l, &r);
                 }
             }
         }
@@ -115,7 +116,7 @@ int main(void) {
             if (weight <= 0.000001) continue;
             low_phase[c] += 2 * PI * qfreq(low_roots[c]) / SR;
             if (low_phase[c] > 2 * PI) low_phase[c] -= 2 * PI;
-            double low = sin(low_phase[c]) * 0.013 * weight * phrase_breath * (0.9 + 0.1 * sin(2 * PI * t / 130.0));
+            double low = sin(low_phase[c]) * 0.012 * weight * phrase_breath * session_dim * (0.9 + 0.1 * sin(2 * PI * t / 130.0));
             pan_stereo(low, 0.0, &l, &r);
         }
 
@@ -129,8 +130,8 @@ int main(void) {
             key_phase[1] += 2 * PI * note_b / SR;
             if (key_phase[0] > 2 * PI) key_phase[0] -= 2 * PI;
             if (key_phase[1] > 2 * PI) key_phase[1] -= 2 * PI;
-            pan_stereo(sin(key_phase[0]) * env * 0.0040, -0.12, &l, &r);
-            pan_stereo(sin(key_phase[1]) * env * 0.0030, 0.16, &l, &r);
+            pan_stereo(sin(key_phase[0]) * env * 0.0034 * session_dim, -0.12, &l, &r);
+            pan_stereo(sin(key_phase[1]) * env * 0.0025 * session_dim, 0.16, &l, &r);
         }
 
         /* Subtle room-tone style bed: abstract filtered air, no identifiable events. */

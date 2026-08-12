@@ -3,6 +3,7 @@ import SwiftUI
 struct GenerativeAnimationStage: View {
     let isActive: Bool
     let mode: FocusMode
+    let productivityCueStartedAt: Date?
     @Environment(\.colorScheme) private var colorScheme
 
     var body: some View {
@@ -28,6 +29,11 @@ struct GenerativeAnimationStage: View {
                     for index in 0..<12 {
                         drawWaveElement(index: index, time: time, size: size, palette: palette, context: &context)
                     }
+                }
+
+                if mode == .focus, let productivityCueStartedAt {
+                    let cueAge = timeline.date.timeIntervalSince(productivityCueStartedAt)
+                    drawProductivityCue(age: cueAge, size: size, palette: palette, context: &context)
                 }
             }
         }
@@ -57,6 +63,65 @@ struct GenerativeAnimationStage: View {
             pointContext.opacity = shimmer * 0.025
             pointContext.fill(Path(ellipseIn: rect), with: .color(palette.stroke))
         }
+    }
+
+    private func drawProductivityCue(
+        age: TimeInterval,
+        size: CGSize,
+        palette: StagePalette,
+        context: inout GraphicsContext
+    ) {
+        let duration = 7.5
+        guard age >= 0, age <= duration else { return }
+
+        let progress = age / duration
+        let appear = smoothstep(0.0, 0.18, progress)
+        let dissolve = 1.0 - smoothstep(0.48, 1.0, progress)
+        let alpha = appear * dissolve
+
+        guard alpha > 0.01 else { return }
+
+        let center = CGPoint(x: size.width * 0.5, y: size.height * 0.50)
+        let base = min(size.width, size.height)
+        let pulse = CGFloat(0.72 + progress * 0.72)
+
+        for index in 0..<4 {
+            let seed = Double(index) * 17.37
+            let width = base * CGFloat(0.22 + Double(index) * 0.075) * pulse
+            let height = base * CGFloat(0.14 + Double(index) * 0.055) * pulse
+            let offsetY = base * CGFloat(random(seed + 1.0) - 0.5) * 0.06
+            let rect = CGRect(
+                x: center.x - width / 2,
+                y: center.y - height / 2 + offsetY,
+                width: width,
+                height: height
+            )
+
+            var graphicsContext = context
+            graphicsContext.opacity = alpha * (0.20 - Double(index) * 0.025)
+            graphicsContext.addFilter(.blur(radius: CGFloat(index) * 0.18))
+            graphicsContext.stroke(
+                Path(roundedRect: rect, cornerRadius: max(2, min(width, height) * 0.035)),
+                with: .color(palette.stroke),
+                lineWidth: 0.52
+            )
+        }
+
+        let markSize = base * CGFloat(0.048 + progress * 0.012)
+        let markRect = CGRect(
+            x: center.x - markSize / 2,
+            y: center.y - markSize / 2,
+            width: markSize,
+            height: markSize
+        )
+
+        var markContext = context
+        markContext.opacity = alpha * 0.28
+        markContext.stroke(
+            Path(roundedRect: markRect, cornerRadius: markSize * 0.12),
+            with: .color(palette.stroke),
+            lineWidth: 0.7
+        )
     }
 
     private func drawRectElement(

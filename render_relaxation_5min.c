@@ -4,7 +4,7 @@
 #include <stdlib.h>
 
 #define SR 44100
-#define DURATION 300
+#define DURATION 1800
 #define TOTAL ((int64_t)SR * DURATION)
 #define PI 3.14159265358979323846
 
@@ -55,7 +55,7 @@ static double soft_pulse(double phase, double width) {
 }
 
 int main(void) {
-    const char *out = "Fordybelse_relaxation_warm_5min.wav";
+    const char *out = "Fordybelse_relaxation_warm_30min.wav";
     int16_t *audio = (int16_t *)malloc((size_t)TOTAL * 2 * sizeof(int16_t));
     if (!audio) {
         fprintf(stderr, "Could not allocate render buffer.\n");
@@ -95,7 +95,8 @@ int main(void) {
         double wa = 0.5 + 0.5 * cos(PI * cf);
         double wb = 0.5 - 0.5 * cos(PI * cf);
 
-        double master = smoothstep(t / 10.0) * (1.0 - smoothstep((t - (DURATION - 10.0)) / 10.0));
+        double master = smoothstep(t / 14.0) * (1.0 - smoothstep((t - (DURATION - 14.0)) / 14.0));
+        double session_softness = 0.92 + 0.08 * sin(2 * PI * t / 720.0 + PI / 3.0);
         double breathe = 0.78 + 0.065 * sin(2 * PI * t / 75.0) + 0.030 * sin(2 * PI * t / 100.0);
         double phrase_breath = 0.58 + 0.42 * pow(sin(PI * fmod(t / 24.0, 1.0)), 0.82);
 
@@ -115,7 +116,7 @@ int main(void) {
                     double ph = pad_phase[c][note][layer];
                     double tone = sin(ph) + 0.10 * sin(2.0 * ph + 0.35);
                     double pan = 0.34 * sin(2 * PI * t / (125.0 + note * 10.0) + c * 0.2);
-                    pan_stereo(tone * amp * weight * breathe * phrase_breath, pan, &l, &r);
+                    pan_stereo(tone * amp * weight * breathe * phrase_breath * session_softness, pan, &l, &r);
                 }
             }
         }
@@ -129,7 +130,7 @@ int main(void) {
                 string_phase[c][v] += 2 * PI * hz / SR;
                 if (string_phase[c][v] > 2 * PI) string_phase[c][v] -= 2 * PI;
                 double bow = sin(string_phase[c][v]) + 0.06 * sin(3.0 * string_phase[c][v]);
-                double amp = 0.0065 * weight * phrase_breath * (0.7 + 0.3 * sin(2 * PI * t / (60.0 + v * 20.0)));
+                double amp = 0.0062 * weight * phrase_breath * session_softness * (0.7 + 0.3 * sin(2 * PI * t / (60.0 + v * 20.0)));
                 pan_stereo(bow * amp, -0.42 + v * 0.42, &l, &r);
             }
         }
@@ -140,7 +141,7 @@ int main(void) {
         if (bass_phase > 2 * PI) bass_phase -= 2 * PI;
         double whole_phase = fmod(beat / 4.0, 1.0);
         double bass_env = 0.62 + 0.38 * soft_pulse(whole_phase, 0.24);
-        double bass = (sin(bass_phase) + 0.12 * sin(2.0 * bass_phase)) * 0.032 * bass_env;
+        double bass = (sin(bass_phase) + 0.12 * sin(2.0 * bass_phase)) * 0.029 * bass_env;
         pan_stereo(bass, 0.0, &l, &r);
 
         /* Muted piano/key gestures: sparse, slow, non-hooky. */
@@ -168,7 +169,7 @@ int main(void) {
 
         /* Slow predictable pulse, closer to breathing than percussion. */
         double beat_phase = fmod(beat, 1.0);
-        double pulse = soft_pulse(beat_phase, 0.15) * 0.0045 + soft_pulse(fmod(beat / 2.0, 1.0), 0.20) * 0.0055;
+        double pulse = soft_pulse(beat_phase, 0.15) * 0.0038 + soft_pulse(fmod(beat / 2.0, 1.0), 0.20) * 0.0048;
         double muted_tick = one_pole(rand_bipolar() * pulse, &perc_state, 0.11);
         pan_stereo(muted_tick, 0.03, &l, &r);
 

@@ -1,0 +1,26 @@
+"app.tagline" = "Your personal soundscape";
+"app.version_format" = "Version %@";
+
+"status.tap_to_begin" = "Tap to begin";
+"status.focus_active" = "Focus mode is active";
+"status.relax_active" = "Relax mode is active";
+"status.sleep_active" = "Sleep mode is active";
+"status.audio_unavailable" = "Audio asset unavailable";
+
+"mode.focus.title" = "Focus";
+"mode.relax.title" = "Relax";
+"mode.sleep.title" = "Sleep";
+"mode.accessibility.available" = "%@ mode";
+"mode.accessibility.coming_later" = "%@ mode, coming later";
+
+"playback.play.accessibility.label" = "Play focus soundscape";
+"playback.pause.accessibility.label" = "Pause focus soundscape";
+"playback.accessibility.hint" = "Starts or pauses Månen";
+
+"now_playing.album_format" = "%@ Soundscape";
+
+"productivity_periods.title" = "Productivity periods";
+"productivity_periods.subtitle.disabled" = "25-minute Focus cue";
+"productivity_periods.subtitle.enabled" = "Cue every 25 minutes in Focus";
+"productivity_periods.accessibility.label" = "Productivity periods";
+"productivity_periods.accessibility.hint" = "Plays a calm cue after 25 minutes of uninterrupted playback in Focus mode.";

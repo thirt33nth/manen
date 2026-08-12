@@ -1,0 +1,7 @@
+Månen is a minimal ambient soundscape app for focused work.
+
+Choose Focus, Relax, or Sleep and start a calm long-form ambient loop. The interface stays quiet: monochrome geometry, a simple play control, and a subtle elapsed timer.
+
+For focused work, Månen can mark 25-minute productivity periods with a soft sound cue and a gentle visual signal while the soundscape continues.
+
+There are no feeds, lists, accounts, timers to configure, or bright distractions. Månen is designed to feel like a restrained ambient object for listening, concentration, and quiet transitions.

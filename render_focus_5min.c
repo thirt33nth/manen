@@ -4,7 +4,7 @@
 #include <stdlib.h>
 
 #define SR 44100
-#define DURATION 300
+#define DURATION 1800
 #define TOTAL ((int64_t)SR * DURATION)
 #define PI 3.14159265358979323846
 
@@ -56,7 +56,7 @@ static double one_pole(double input, double *state, double amount) {
 }
 
 int main(void) {
-    const char *out = "Fordybelse_focus_downtempo_5min.wav";
+    const char *out = "Fordybelse_focus_downtempo_30min.wav";
     int16_t *audio = (int16_t *)malloc((size_t)TOTAL * 2 * sizeof(int16_t));
     if (!audio) {
         fprintf(stderr, "Could not allocate render buffer.\n");
@@ -94,7 +94,8 @@ int main(void) {
         double half_phase = fmod(beat * 0.5, 1.0);
         double whole_phase = fmod(beat * 0.25, 1.0);
 
-        double master = smoothstep(t / 8.0) * (1.0 - smoothstep((t - (DURATION - 8.0)) / 8.0));
+        double master = smoothstep(t / 10.0) * (1.0 - smoothstep((t - (DURATION - 10.0)) / 10.0));
+        double session_energy = 0.88 + 0.12 * sin(2 * PI * t / 900.0 - PI / 2.0);
         double breathe = 0.80 + 0.05 * sin(2 * PI * t / 75.0) + 0.030 * sin(2 * PI * t / 50.0);
         double phrase_breath = 0.56 + 0.44 * pow(sin(PI * fmod(beat / 8.0, 1.0)), 0.72);
 
@@ -112,7 +113,7 @@ int main(void) {
                     double ph = pad_phase[c][note][layer];
                     double tone = sin(ph) + 0.12 * sin(2.0 * ph + 0.2);
                     double pan = 0.36 * sin(2 * PI * t / (90.0 + note * 12.0) + note);
-                    pan_stereo(tone * amp * weight * breathe * phrase_breath, pan, &l, &r);
+                    pan_stereo(tone * amp * weight * breathe * phrase_breath * session_energy, pan, &l, &r);
                 }
             }
         }
@@ -122,7 +123,7 @@ int main(void) {
         bass_phase += 2 * PI * bass_hz / SR;
         if (bass_phase > 2 * PI) bass_phase -= 2 * PI;
         double bass_env = 0.58 + 0.42 * pulse_env(whole_phase, 0.03, 0.18);
-        double bass = (sin(bass_phase) + 0.2 * sin(2.0 * bass_phase)) * 0.048 * bass_env;
+        double bass = (sin(bass_phase) + 0.2 * sin(2.0 * bass_phase)) * 0.044 * bass_env * (0.92 + 0.08 * session_energy);
         pan_stereo(bass, 0.0, &l, &r);
 
         /* Muted keys: sparse, soft, and intentionally unhooky. */
@@ -145,8 +146,8 @@ int main(void) {
         double noise = rand_bipolar();
         double soft_noise = one_pole(noise, &noise_state, 0.0025);
         double hat_noise = noise - one_pole(noise, &hat_state, 0.08);
-        double hat_env = 0.006 * pulse_env(half_phase, 0.02, 0.045);
-        double perc_env = 0.009 * pulse_env(beat_phase, 0.04, 0.07) + 0.004 * pulse_env(beat_phase, 0.54, 0.07);
+        double hat_env = 0.0055 * pulse_env(half_phase, 0.02, 0.045) * (0.85 + 0.15 * session_energy);
+        double perc_env = (0.008 * pulse_env(beat_phase, 0.04, 0.07) + 0.004 * pulse_env(beat_phase, 0.54, 0.07)) * (0.85 + 0.15 * session_energy);
         double perc = one_pole(hat_noise * perc_env, &perc_state, 0.2);
         pan_stereo(soft_noise * 0.030, 0.18 * sin(2 * PI * t / 65.0), &l, &r);
         pan_stereo(perc + hat_noise * hat_env, 0.06, &l, &r);

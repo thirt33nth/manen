@@ -18,10 +18,15 @@ struct ModeSelector: View {
                 }
                 .buttonStyle(.plain)
                 .disabled(!mode.isAvailableInMVP)
-                .accessibilityLabel(mode.isAvailableInMVP ? "\(mode.title) mode" : "\(mode.title) mode, coming later")
+                .accessibilityLabel(accessibilityLabel(for: mode))
             }
         }
         .animation(.easeInOut(duration: 0.25), value: selectedMode)
+    }
+
+    private func accessibilityLabel(for mode: FocusMode) -> String {
+        let key = mode.isAvailableInMVP ? "mode.accessibility.available" : "mode.accessibility.coming_later"
+        return String(format: NSLocalizedString(key, comment: ""), mode.title)
     }
 }
 

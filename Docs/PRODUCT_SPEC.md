@@ -1,8 +1,8 @@
-# Lugna Product Spec
+# Månen Product Spec
 
 ## MVP intent
 
-Lugna is a minimal iPhone focus app for iOS 17+. The first version performs one Core Job:
+Månen is a minimal iPhone focus app for iOS 17+. The first version performs one Core Job:
 
 `I want to enter a stable focus state with almost no interaction, in order to continue demanding work without adding another distracting product to my desk.`
 
@@ -11,7 +11,7 @@ The MVP should feel like a quiet digital ambient object, not a media player. It 
 ## Target experience
 
 - One screen only.
-- Title: Lugna.
+- Title: Månen.
 - Status text: idle or active.
 - One large play/pause control.
 - Minimal mode preparation for Focus / Relax / Sleep, with Focus active in MVP.
@@ -35,6 +35,6 @@ The code includes `FocusMode` cases for `focus`, `relax`, and `sleep`. The MVP n
 - The focus soundscape starts in one tap.
 - The sound loops without audible pause or click.
 - Playback continues in the background and on the lock screen.
-- Lock screen / Control Center shows Lugna, not the file name.
+- Lock screen / Control Center shows Månen, not the file name.
 - The screen stays visually premium and quiet in light and dark mode.
 - No extra controls appear in the first version.

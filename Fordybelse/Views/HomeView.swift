@@ -24,8 +24,20 @@ struct HomeView: View {
                     .padding(.top, compact ? 16 : 20)
                     .padding(.horizontal, compact ? 22 : 28)
 
+                    ProductivityPeriodsToggle(
+                        isEnabled: model.isProductivityPeriodsEnabled,
+                        isCompact: compact
+                    ) { isEnabled in
+                        model.setProductivityPeriodsEnabled(isEnabled)
+                    }
+                    .padding(.horizontal, compact ? 22 : 28)
+
                     ZStack(alignment: .bottom) {
-                        GenerativeAnimationStage(isActive: model.isPlaying, mode: model.selectedMode)
+                        GenerativeAnimationStage(
+                            isActive: model.isPlaying,
+                            mode: model.selectedMode,
+                            productivityCueStartedAt: model.productivityCueStartedAt
+                        )
                             .padding(.horizontal, compact ? 10 : 14)
                             .padding(.top, compact ? 10 : 16)
                             .padding(.bottom, compact ? 54 : 64)
@@ -36,18 +48,26 @@ struct HomeView: View {
                         VStack(spacing: 0) {
                             Spacer(minLength: compact ? 24 : 34)
 
-                            PlayPauseButton(isPlaying: model.isPlaying) {
-                                model.togglePlayback()
+                            VStack(spacing: compact ? 10 : 12) {
+                                PlayPauseButton(isPlaying: model.isPlaying) {
+                                    model.togglePlayback()
+                                }
+
+                                Text(model.playbackElapsedText)
+                                    .font(.custom("HelveticaNeue-Light", size: compact ? 12 : 13))
+                                    .monospacedDigit()
+                                    .foregroundStyle(.secondary.opacity(model.isPlaying ? 0.70 : 0.46))
+                                    .contentTransition(.numericText())
                             }
 
                             Spacer(minLength: compact ? 24 : 34)
 
                             VStack(spacing: compact ? 4 : 5) {
-                                Text("Your personal soundscape.")
+                                Text("app.tagline")
                                     .font(.custom("HelveticaNeue-Light", size: compact ? 12 : 13))
                                     .foregroundStyle(.secondary.opacity(0.74))
 
-                                Text("Version \(appVersion)")
+                                Text(versionText)
                                     .font(.custom("HelveticaNeue-Light", size: compact ? 10 : 11))
                                     .foregroundStyle(.secondary.opacity(0.48))
                             }
@@ -64,7 +84,7 @@ struct HomeView: View {
 
     private func header(compact: Bool) -> some View {
         VStack(spacing: compact ? 6 : 8) {
-            Text("Lugna")
+            Text("Månen")
                 .font(.custom("HelveticaNeue-Thin", size: compact ? 31 : 34))
                 .tracking(0)
                 .foregroundStyle(primaryText)
@@ -100,5 +120,9 @@ struct HomeView: View {
 
     private var appVersion: String {
         Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "1.0"
+    }
+
+    private var versionText: String {
+        String(format: NSLocalizedString("app.version_format", comment: ""), appVersion)
     }
 }

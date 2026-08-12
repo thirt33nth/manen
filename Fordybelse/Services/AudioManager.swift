@@ -18,6 +18,7 @@ final class AudioManager: NSObject {
     var onPlaybackStateChange: ((Bool) -> Void)?
 
     private var player: AVAudioPlayer?
+    private var productivityCuePlayer: AVAudioPlayer?
     private var activeMode: FocusMode?
     private var didConfigureRemoteCommands = false
 
@@ -40,6 +41,20 @@ final class AudioManager: NSObject {
         player?.pause()
         updateNowPlaying(isPlaying: false)
         onPlaybackStateChange?(false)
+    }
+
+    func playProductivityCue() throws {
+        try configureAudioSession()
+
+        guard let url = Bundle.main.url(forResource: "productivity_cue", withExtension: "m4a") else {
+            throw AudioError.missingAsset("productivity_cue.m4a")
+        }
+
+        productivityCuePlayer = try AVAudioPlayer(contentsOf: url)
+        productivityCuePlayer?.numberOfLoops = 0
+        productivityCuePlayer?.volume = 0.42
+        productivityCuePlayer?.prepareToPlay()
+        productivityCuePlayer?.play()
     }
 
     func clearNowPlaying() {
@@ -110,9 +125,12 @@ final class AudioManager: NSObject {
         }
 
         MPNowPlayingInfoCenter.default().nowPlayingInfo = [
-            MPMediaItemPropertyTitle: "Lugna",
-            MPMediaItemPropertyArtist: "Lugna",
-            MPMediaItemPropertyAlbumTitle: "\(activeMode?.title ?? "Focus") Soundscape",
+            MPMediaItemPropertyTitle: "Månen",
+            MPMediaItemPropertyArtist: "Månen",
+            MPMediaItemPropertyAlbumTitle: String(
+                format: NSLocalizedString("now_playing.album_format", comment: ""),
+                activeMode?.title ?? FocusMode.focus.title
+            ),
             MPMediaItemPropertyPlaybackDuration: player?.duration ?? 0,
             MPNowPlayingInfoPropertyElapsedPlaybackTime: player?.currentTime ?? 0,
             MPNowPlayingInfoPropertyPlaybackRate: isPlaying ? 1.0 : 0.0,
@@ -140,7 +158,7 @@ final class AudioManager: NSObject {
                 .foregroundColor: UIColor(white: 0.08, alpha: 0.72),
                 .paragraphStyle: paragraph
             ]
-            "Lugna".draw(in: CGRect(x: 0, y: 226, width: 512, height: 64), withAttributes: attributes)
+            "Månen".draw(in: CGRect(x: 0, y: 226, width: 512, height: 64), withAttributes: attributes)
         }
     }
 }

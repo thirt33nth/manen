@@ -1,0 +1,6 @@
+app_identifier("app.manen.mvp")
+apple_id("kelaeno99@gmail.com")
+
+# Add these values before App Store Connect / TestFlight automation:
+# itc_team_id("123456789")
+team_id("MD88WTQZFJ")

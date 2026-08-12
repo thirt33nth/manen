@@ -1,0 +1,7 @@
+app_identifier("app.manen.mvp")
+metadata_path("./fastlane/metadata")
+screenshots_path("./fastlane/screenshots")
+
+submit_for_review(false)
+automatic_release(false)
+force(false)

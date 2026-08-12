@@ -1,0 +1,26 @@
+"app.tagline" = "Ваш личный саундскейп";
+"app.version_format" = "Версия %@";
+
+"status.tap_to_begin" = "Нажмите, чтобы начать";
+"status.focus_active" = "Режим фокуса активен";
+"status.relax_active" = "Режим отдыха активен";
+"status.sleep_active" = "Режим сна активен";
+"status.audio_unavailable" = "Аудиофайл недоступен";
+
+"mode.focus.title" = "Фокус";
+"mode.relax.title" = "Отдых";
+"mode.sleep.title" = "Сон";
+"mode.accessibility.available" = "Режим %@";
+"mode.accessibility.coming_later" = "Режим %@, скоро";
+
+"playback.play.accessibility.label" = "Воспроизвести саундскейп для фокуса";
+"playback.pause.accessibility.label" = "Поставить саундскейп для фокуса на паузу";
+"playback.accessibility.hint" = "Запускает или приостанавливает Månen";
+
+"now_playing.album_format" = "Саундскейп: %@";
+
+"productivity_periods.title" = "Периоды продуктивности";
+"productivity_periods.subtitle.disabled" = "25-минутный сигнал в режиме фокуса";
+"productivity_periods.subtitle.enabled" = "Сигнал каждые 25 минут в режиме фокуса";
+"productivity_periods.accessibility.label" = "Периоды продуктивности";
+"productivity_periods.accessibility.hint" = "Проигрывает спокойный сигнал после 25 минут непрерывного воспроизведения в режиме Focus.";

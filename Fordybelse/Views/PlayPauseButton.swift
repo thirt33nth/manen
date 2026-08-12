@@ -25,8 +25,8 @@ struct PlayPauseButton: View {
             }
         }
         .buttonStyle(.plain)
-        .accessibilityLabel(isPlaying ? "Pause focus soundscape" : "Play focus soundscape")
-        .accessibilityHint("Starts or pauses Lugna")
+        .accessibilityLabel(isPlaying ? Text("playback.pause.accessibility.label") : Text("playback.play.accessibility.label"))
+        .accessibilityHint(Text("playback.accessibility.hint"))
         .animation(.easeInOut(duration: 0.55), value: isPlaying)
     }
 

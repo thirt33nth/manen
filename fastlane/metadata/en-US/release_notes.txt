@@ -1,0 +1,1 @@
+Initial release with Focus, Relax, and Sleep soundscapes, background audio, lock screen controls, monochrome ambient visuals, and optional 25-minute productivity cues.

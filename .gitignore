@@ -10,6 +10,20 @@ xcuserdata/
 # Swift Package Manager
 .build/
 
+# Ruby / Fastlane
+.env
+.bundle/
+vendor/bundle/
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/
+fastlane/test_output/
+*.p8
+*.cer
+*.p12
+*.mobileprovision
+*.certSigningRequest
+
 # Local snapshots and generated archives
 Snapshots/*.zip
 
