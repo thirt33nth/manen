@@ -1,6 +1,14 @@
 opt_out_usage
+require "shellwords"
 
 default_platform(:ios)
+
+def verify_ipa_audio_assets
+  script_path = File.expand_path("../Scripts/verify_ipa_audio_assets.sh", __dir__)
+  ipa_path = File.expand_path("../build/Manen.ipa", __dir__)
+
+  sh("#{script_path.shellescape} #{ipa_path.shellescape}")
+end
 
 platform :ios do
   private_lane :asc_api_key do
@@ -66,6 +74,8 @@ platform :ios do
       xcargs: provisioning_xcargs,
       skip_package_ipa: false
     )
+
+    verify_ipa_audio_assets
   end
 
   desc "Upload a Release archive to TestFlight"
@@ -81,6 +91,8 @@ platform :ios do
   desc "Upload Månen to App Store Connect without submitting for review"
   lane :app_store do
     api_key = asc_api_key
+    verify_ipa_audio_assets
+
     upload_to_app_store(
       api_key: api_key,
       ipa: "build/Manen.ipa",
