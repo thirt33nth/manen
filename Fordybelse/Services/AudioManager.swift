@@ -76,7 +76,7 @@ final class AudioManager: NSObject {
 
     private func configureAudioSession() throws {
         let session = AVAudioSession.sharedInstance()
-        try session.setCategory(.playback, mode: .default, options: [.allowAirPlay])
+        try session.setCategory(.playback, mode: .default)
         try session.setActive(true)
     }
 
