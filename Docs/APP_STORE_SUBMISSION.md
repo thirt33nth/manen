@@ -31,17 +31,15 @@ Månen is a minimal ambient soundscape app for focused work.
 
 Choose Focus, Relax, or Sleep and start a calm long-form ambient loop. The interface stays quiet: monochrome geometry, a simple play control, and a subtle elapsed timer.
 
-For focused work, Månen can mark 25-minute productivity periods with a soft sound cue and a gentle visual signal while the soundscape continues.
-
 There are no feeds, lists, accounts, timers to configure, or bright distractions. Månen is designed to feel like a restrained ambient object for listening, concentration, and quiet transitions.
 
 ### Keywords
 
-focus,ambient,soundscape,productivity,relax,sleep,concentration,work
+focus,ambient,soundscape,calm,relax,sleep,concentration,work
 
 ### What's New
 
-Initial release with Focus, Relax, and Sleep soundscapes, background audio, lock screen controls, monochrome ambient visuals, and optional 25-minute productivity cues.
+Initial release with Focus, Relax, and Sleep soundscapes, background audio, lock screen controls, and monochrome ambient visuals.
 
 ## Review Information
 
@@ -53,23 +51,32 @@ Initial release with Focus, Relax, and Sleep soundscapes, background audio, lock
 
 ### Review Notes
 
-Månen is an offline ambient soundscape app. No sign-in is required.
+Månen is an ambient soundscape app whose core audio playback works offline. No sign-in is required.
 
-The app includes three modes: Focus, Relax, and Sleep. Each mode plays a bundled offline audio loop. Audio continues in the background and on the Lock Screen. The Focus mode also includes an optional productivity-period toggle: when enabled, a soft cue and visual signal appear after 25 minutes of uninterrupted Focus playback.
+The app includes three modes: Focus, Relax, and Sleep. Each mode plays a bundled offline audio loop. Audio continues in the background and on the Lock Screen.
 
-The app does not collect user data, does not show ads, does not use analytics, and does not include in-app purchases.
+The app does not show ads and does not include in-app purchases. It uses AppMetrica for pseudonymous product analytics. The advertising support module, IDFA collection, precise location, and cross-app tracking are disabled.
 
 ## App Privacy
 
-Use "Data Not Collected" in App Store Connect.
+Declare the AppMetrica analytics data in App Store Connect and verify the generated privacy report before submission.
 
 Suggested answers:
 
-- Does this app collect data from this app? No
+- Does this app collect data from this app? Yes
 - Does this app use third-party advertising? No
 - Does this app track users? No
-- Does this app use data for analytics? No
+- Does this app use data for analytics? Yes
 - Does this app require account creation? No
+
+Suggested data types, all not linked to identity and not used for tracking:
+
+- Identifiers → Device ID → Analytics
+- Usage Data → Product Interaction → Analytics
+- Location → Coarse Location → Analytics
+- Diagnostics → Performance Data and Other Diagnostic Data → Analytics / App Functionality
+
+Do not declare Purchase History unless automatic revenue tracking is enabled in a future release.
 
 ## Content Rights
 
@@ -105,7 +112,7 @@ Recommended screenshots:
 1. Focus mode idle screen
 2. Focus mode active with animation
 3. Mode selector showing Focus / Relax / Sleep
-4. Productivity periods toggle enabled
+4. Sleep mode active with animation
 5. Lock Screen / Now Playing, if you want to show background audio support
 
 Keep captions minimal and monochrome. Avoid wellness claims, productivity guarantees, or medical language.

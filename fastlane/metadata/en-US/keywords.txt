@@ -1,1 +1,1 @@
-focus,ambient,soundscape,productivity,relax,sleep,concentration,work
+focus,ambient,soundscape,calm,relax,sleep,concentration,work
